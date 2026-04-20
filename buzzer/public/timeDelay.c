@@ -22,9 +22,9 @@ void delay_ms(uint16_t ms)
 void delay_us(uint16_t us)
 {
 	SysTick->LOAD = us*fac_us;
-	//Çå¿ÕÓÃÓÚ¼ÇÊ±¼Ä´æÆ÷
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½Ê±ï¿½Ä´ï¿½ï¿½ï¿½
 	SysTick->VAL = 0x00;
-	//¿ªÆô¿ØÖÆSYSCLK¼Ä´æÆ÷
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½SYSCLKï¿½Ä´ï¿½ï¿½ï¿½
 	SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
 	uint32_t ctrl;
 	do
