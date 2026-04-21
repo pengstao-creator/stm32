@@ -463,85 +463,20 @@
           <GroupName>public</GroupName>
           <Files>
             <File>
-              <FileName>timeDelay.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\fw_oper_led/public\timeDelay.h</FilePath>
-            </File>
-            <File>
               <FileName>timeDelay.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\fw_oper_led/public\timeDelay.c</FilePath>
+              <FilePath>.\public\timeDelay.c</FilePath>
             </File>
             <File>
-              <FileName>system.h</FileName>
+              <FileName>timeDelay.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\public\system.h</FilePath>
+              <FilePath>.\public\timeDelay.h</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>APP</GroupName>
           <Files>
-            <File>
-              <FileName>buzz.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\App\buzz.c</FilePath>
-            </File>
-            <File>
-              <FileName>buzz.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\App\buzz.h</FilePath>
-            </File>
-            <File>
-              <FileName>smg.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\App\smg.h</FilePath>
-            </File>
-            <File>
-              <FileName>smg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\App\smg.c</FilePath>
-            </File>
-            <File>
-              <FileName>key.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\App\key.c</FilePath>
-            </File>
-            <File>
-              <FileName>computer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\App\computer.c</FilePath>
-            </File>
-            <File>
-              <FileName>computer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\App\computer.h</FilePath>
-            </File>
-            <File>
-              <FileName>matrixKey.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\App\matrixKey.c</FilePath>
-            </File>
-            <File>
-              <FileName>matrixKey.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\App\matrixKey.h</FilePath>
-            </File>
-            <File>
-              <FileName>key.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\App\key.h</FilePath>
-            </File>
-            <File>
-              <FileName>bindKey.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\App\bindKey.c</FilePath>
-            </File>
-            <File>
-              <FileName>bindKey.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\App\bindKey.h</FilePath>
-            </File>
             <File>
               <FileName>exti.c</FileName>
               <FileType>1</FileType>
