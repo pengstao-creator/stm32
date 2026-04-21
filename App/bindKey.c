@@ -101,6 +101,7 @@ void bindKey(u8 num)
                 //切换A数组
                 index_op = OP_NULL;
                 current_ary = SET_A;
+                setop = SET_OP;
                 index_ary = getArrySize(aryA);
             }
         }
