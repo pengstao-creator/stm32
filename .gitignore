@@ -64,3 +64,4 @@ dkms.conf
 #编译文件夹
 /Obj/*
 /objects/*
+/.vscode/*
