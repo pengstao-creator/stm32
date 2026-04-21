@@ -63,5 +63,7 @@ dkms.conf
 
 #编译文件夹
 /Obj/*
+!obj/.gitkeep
 /objects/*
+！objects/.gitkeep
 /.vscode/*
