@@ -459,6 +459,21 @@
             </File>
           </Files>
         </Group>
+        <Group>
+          <GroupName>App</GroupName>
+          <Files>
+            <File>
+              <FileName>motorDrive.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App\motorDrive.c</FilePath>
+            </File>
+            <File>
+              <FileName>motorDrive.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\App\motorDrive.h</FilePath>
+            </File>
+          </Files>
+        </Group>
       </Groups>
     </Target>
   </Targets>
