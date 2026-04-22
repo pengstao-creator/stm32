@@ -14,9 +14,9 @@ int main()
           while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
           USART_SendData(USART1,data[i]);
         }
-        while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
-        USART_SendData(USART1,'e');
         CLEAN_CONTROL_FLAG;
       }
   }
 }
+
+
