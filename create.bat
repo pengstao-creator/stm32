@@ -25,6 +25,12 @@ if "%PROJECT_NAME%"=="" (
 
 :name_ok
 
+echo %PROJECT_NAME% | findstr /R "^[A-Za-z_][A-Za-z0-9_]*$" >nul
+if errorlevel 1 (
+    echo [ERROR] 项目名称只能使用字母/数字/下划线，且不能以数字开头
+    goto :fail
+)
+
 echo [INFO] 创建并切换分支: %PROJECT_NAME%
 git checkout -b "%PROJECT_NAME%"
 if errorlevel 1 (
@@ -38,8 +44,27 @@ if not exist "App" (
     goto :fail
 )
 
-if not exist "App\%PROJECT_NAME%.h" type nul > "App\%PROJECT_NAME%.h"
-if not exist "App\%PROJECT_NAME%.c" type nul > "App\%PROJECT_NAME%.c"
+if exist "App\%PROJECT_NAME%.h" (
+    echo [WARN] App\%PROJECT_NAME%.h 已存在，跳过覆盖
+) else (
+    (
+        echo #ifndef __%PROJECT_NAME%_H
+        echo #define __%PROJECT_NAME%_H
+        echo.
+        echo #include "system.h"
+        echo.
+        echo #endif
+    ) > "App\%PROJECT_NAME%.h"
+)
+
+if exist "App\%PROJECT_NAME%.c" (
+    echo [WARN] App\%PROJECT_NAME%.c 已存在，跳过覆盖
+) else (
+    (
+        echo #include "%PROJECT_NAME%.h"
+        echo.
+    ) > "App\%PROJECT_NAME%.c"
+)
 
 REM 3) git add . 并以项目名称提交
 git add .
