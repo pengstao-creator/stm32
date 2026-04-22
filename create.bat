@@ -25,7 +25,7 @@ if "%PROJECT_NAME%"=="" (
 
 :name_ok
 
-echo %PROJECT_NAME% | findstr /R "^[A-Za-z_][A-Za-z0-9_]*$" >nul
+powershell -NoProfile -Command "if($env:PROJECT_NAME -match '^[A-Za-z_][A-Za-z0-9_]*$'){exit 0}else{exit 1}" >nul
 if errorlevel 1 (
     echo [ERROR] 项目名称只能使用字母/数字/下划线，且不能以数字开头
     goto :fail
