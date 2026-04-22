@@ -1,26 +1,46 @@
 #include "bindKey.h"
 #define OP_NULL 4
-#define SET_A 0
-#define SET_B 1
-#define SET_R 2
-#define SET_OP 0
-char op[4] = {'+','-','*','/'};
-u8 index_op;
-u8 setop;
-u8 current_ary;
-u8 index_ary;
+
+#define IS_A 0x08 
+#define IS_B 0x10
+#define IS_R 0x18
+#define IS_OP 0x20 //标志运算符有效
+#define OP_ADD 0x00
+#define OP_SUB 0x40
+#define OP_MUL 0x80
+#define OP_DIV 0xC0
+//修改为8bit位进行表示
+//00设置的运算符 0是否设置运算符 00当前数组 000 数组下标0-7
+#define GET_ARY_INDEX(X) ((X)&(0x07)) //获取当前数组下标
+#define GET_ARY(X) ((X)&(IS_R)) //获取当前数组
+#define GET_OP_STATE(X) ((X)&(IS_OP)) //获取当前运算符状态
+#define GET_OP(X) ((X)&(OP_DIV)) //获取运算符
+#define CLEAN_ARY(X) ((X)&(~IS_R))
+#define CLEAN_ARY_INDEX(X) ((X)&(~0x07))
+#define SET_ARY_INDEX(X,IDX) ((X) = (((X)&(~0x07)) | ((IDX)&0x07)))
+#define SET_A(X) ((X) = (CLEAN_ARY(X) | (IS_A)))
+#define SET_B(X) ((X) = (CLEAN_ARY(X) | (IS_B)))
+#define SET_R(X) ((X) = (CLEAN_ARY(X) | (IS_R)))
+#define CLEAN_OP_STATE(X) ((X) = ((X)&(~IS_OP)))
+#define SET_OP_STATE(X) ((X) = ((X)|(IS_OP)))
+#define SET_OP(X,Y) ((X) = ((X)&(~OP_DIV) | ((Y)&OP_DIV)))
+
 u8 aryA[8];
 u8 aryB[8];
+u8 state = 0;
+
+
 void bindKeyInit()
 {
     computerInit();
     matrixInit();
     clearArryAll(aryA);
     clearArryAll(aryB);
-    u8 index_op = OP_NULL;
-    u8 setop = SET_OP;
-    u8 current_ary = SET_A;
-    u8 index_ary = 0;
+    state = 0;
+    SET_A(state);
+    SET_ARY_INDEX(state,0);
+    CLEAN_OP_STATE(state);
+    SET_OP(state,OP_ADD);
 }
 
 u8 toComNum(u8 num)
@@ -47,90 +67,100 @@ u8 toComNum(u8 num)
 
 void bindKey(u8 num)
 {
+    u8 idx = GET_ARY_INDEX(state);
+    u8 ary = GET_ARY(state);
+
     if(num < 4)
     {
-        if(!setop && current_ary == SET_A)
+        if(!GET_OP_STATE(state) && ary == IS_A)
         {
-            setop = !setop;
-            index_op = num;
-            current_ary = SET_B;
-            index_ary = 0;
+            //设置符号位启用
+            SET_OP_STATE(state);
+            SET_OP(state,num << 6);
+            SET_B(state);
+            SET_ARY_INDEX(state,0);
             clearArryAll(aryB);
         }
        
     }
     else if(num == 15)
     {
-        if(setop)
+        if(GET_OP_STATE(state))
         {
-            setop=!setop;
-            current_ary = SET_R;
-            index_ary = 0;
-            //显示运算结果
-            if(index_op >= 4)
-            {
-                setError();
-                return;
-            } 
-            if(op[index_op] == '+'){add();}
-            else if(op[index_op] == '-'){sub();}
-            else if(op[index_op] == '*'){mul();}
-            else {div();}
+            SET_R(state);
+            SET_ARY_INDEX(state,0);
+            CLEAN_OP_STATE(state);
+            //计算运算结果
+            if(GET_OP(state) == OP_ADD){add();}
+            else if(GET_OP(state) == OP_SUB){sub();}
+            else if(GET_OP(state) == OP_MUL){mul();}
+            else if(GET_OP(state) == OP_DIV){div();}
+            else {setError();}
         }
     }
     else if(num == 7)
     {
-        if(--index_ary >= 8){index_ary = 0;};
-        if(current_ary == SET_R)
+        if(ary == IS_R)
         {
             clearArryAll(aryA);
             clearArryAll(aryB); 
             clearAll();
-            index_ary = 0;
-            current_ary = SET_A;
-            index_op = OP_NULL;
-            setop = SET_OP;
+            SET_A(state);
+            SET_ARY_INDEX(state,0);
+            CLEAN_OP_STATE(state);
+            SET_OP(state,OP_ADD);
         }
-        else if(current_ary == SET_B)
+        else if(ary == IS_B)
         {
             //数组B
-            clearArryCnt(aryB,1);
-            setReArryB(aryB);
-            if(!index_ary)
+            if(idx > 0)
             {
-                //切换A数组
-                index_op = OP_NULL;
-                current_ary = SET_A;
-                setop = SET_OP;
-                index_ary = getArrySize(aryA);
+                idx--;
+                SET_ARY_INDEX(state,idx);
+                clearArryCnt(aryB,1);
+                setReArryB(aryB);
+            }
+            if(GET_ARY_INDEX(state) == 0)
+            {
+                SET_A(state);
+                SET_ARY_INDEX(state,getArrySize(aryA));
+                CLEAN_OP_STATE(state);
             }
         }
         else
         {
             //数组A
-            clearArryCnt(aryA,1);
-            setReArryA(aryA);
+            if(idx > 0)
+            {
+                idx--;
+                SET_ARY_INDEX(state,idx);
+                clearArryCnt(aryA,1);
+                setReArryA(aryA);
+            }
         }
     }
     else if(num < NOT_P)
     {
         u8 a = toComNum(num);
         if(a == NOT_P)return;
-        if(current_ary == SET_A)
+        idx = GET_ARY_INDEX(state);
+        ary = GET_ARY(state);
+        if(ary == IS_A)
         {
-            if(index_ary < 8)
+            if(idx < 8)
             {
-                
-                aryA[index_ary++] = a;
+                aryA[idx++] = a;
+                SET_ARY_INDEX(state,idx);
                 setReArryA(aryA);
             }
 
         }
-        else if(current_ary == SET_B)
+        else if(ary == IS_B)
         {
-            if(index_ary < 8)
+            if(idx < 8)
             {
-                aryB[index_ary++] = a;
+                aryB[idx++] = a;
+                SET_ARY_INDEX(state,idx);
                 setReArryB(aryB);
             }
         }
@@ -139,7 +169,8 @@ void bindKey(u8 num)
 
 void show()
 {
-    if(current_ary == SET_A) {showArryA();}
-    else if(current_ary == SET_B) {showArryB();}
+    u8 ary = GET_ARY(state);
+    if(ary == IS_A) {showArryA();}
+    else if(ary == IS_B) {showArryB();}
     else {showResult();}
 }

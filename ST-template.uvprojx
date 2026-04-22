@@ -493,11 +493,6 @@
               <FilePath>.\App\smg.c</FilePath>
             </File>
             <File>
-              <FileName>key.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\App\key.c</FilePath>
-            </File>
-            <File>
               <FileName>computer.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\App\computer.c</FilePath>
@@ -516,11 +511,6 @@
               <FileName>matrixKey.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\App\matrixKey.h</FilePath>
-            </File>
-            <File>
-              <FileName>key.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\App\key.h</FilePath>
             </File>
             <File>
               <FileName>bindKey.c</FileName>
