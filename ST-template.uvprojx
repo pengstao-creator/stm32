@@ -461,6 +461,13 @@
         </Group>
         <Group>
           <GroupName>App</GroupName>
+          <Files>
+            <File>
+              <FileName>buzz.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App\buzz.c</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>
