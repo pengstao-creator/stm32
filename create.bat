@@ -38,8 +38,13 @@ if not exist "App" (
     goto :fail
 )
 
-if not exist "App\%PROJECT_NAME%.h" type nul > "App\%PROJECT_NAME%.h"
-if not exist "App\%PROJECT_NAME%.c" type nul > "App\%PROJECT_NAME%.c"
+if not exist "touch.bat" (
+    echo [ERROR] 未找到 touch.bat
+    goto :fail
+)
+
+call "%~dp0touch.bat" "App\%PROJECT_NAME%"
+if errorlevel 1 goto :fail
 
 REM 3) git add . 并以项目名称提交
 git add .
