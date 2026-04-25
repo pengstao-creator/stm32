@@ -38,27 +38,13 @@ if not exist "App" (
     goto :fail
 )
 
-if exist "App\%PROJECT_NAME%.h" (
-    echo [WARN] App\%PROJECT_NAME%.h 已存在，跳过覆盖
-) else (
-    (
-        echo #ifndef __%PROJECT_NAME%_H
-        echo #define __%PROJECT_NAME%_H
-        echo.
-        echo #include "system.h"
-        echo.
-        echo #endif
-    ) > "App\%PROJECT_NAME%.h"
+if not exist "touch.bat" (
+    echo [ERROR] 未找到 touch.bat
+    goto :fail
 )
 
-if exist "App\%PROJECT_NAME%.c" (
-    echo [WARN] App\%PROJECT_NAME%.c 已存在，跳过覆盖
-) else (
-    (
-        echo #include "%PROJECT_NAME%.h"
-        echo.
-    ) > "App\%PROJECT_NAME%.c"
-)
+call "%~dp0touch.bat" "App\%PROJECT_NAME%"
+if errorlevel 1 goto :fail
 
 REM 3) git add . 并以项目名称提交
 git add .
